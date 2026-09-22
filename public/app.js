@@ -48,17 +48,29 @@ function cardHtml(item) {
 }
 
 async function loadAdBanner(containerId, placement) {
+  // Shows ONE ad at a time (never stacked) and rotates through the rest
+  // automatically, so a placement with several ads doesn't pile up as a
+  // tall column of banners.
   const el = document.getElementById(containerId);
   if (!el) return;
   try {
     const res = await fetch('/api/ads?placement=' + encodeURIComponent(placement || 'home_banner'));
     const data = await res.json();
-    el.innerHTML = (data.ads || [])
-      .map((ad) => `
+    const ads = data.ads || [];
+    if (!ads.length) { el.innerHTML = ''; return; }
+
+    let i = 0;
+    const render = () => {
+      const ad = ads[i];
+      el.innerHTML = `
         <a class="ad-banner" href="${escapeHtml(ad.target_url)}" target="_blank" rel="noopener sponsored">
-          <img src="${escapeHtml(ad.image_url)}" alt="${escapeHtml(ad.title)}">
-        </a>`)
-      .join('');
+          <img src="${escapeHtml(ad.image_url)}" alt="${escapeHtml(ad.title)}" loading="lazy">
+        </a>`;
+    };
+    render();
+    if (ads.length > 1) {
+      setInterval(() => { i = (i + 1) % ads.length; render(); }, 6000);
+    }
   } catch (err) {
     el.innerHTML = '';
   }

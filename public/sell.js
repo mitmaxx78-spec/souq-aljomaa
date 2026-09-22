@@ -25,27 +25,53 @@
   const defaultPriceLabel = priceLabel ? priceLabel.textContent : '';
   const defaultPricePlaceholder = priceInput ? priceInput.placeholder : '';
 
-  fetch('/api/listings/categories')
-    .then((r) => r.json())
-    .then((data) => {
-      const sel = document.getElementById('category');
-      sel.innerHTML = (data.categories || [])
-        .map((c) => `<option value="${c}">${c}</option>`)
-        .join('');
-      sel.addEventListener('change', () => {
-        const isJob = sel.value === 'وظائف';
-        if (isJob) {
-          pickAuction.style.display = 'none';
-          setKind('FIXED');
-          if (priceLabel) priceLabel.textContent = 'الراتب (اختياري)';
-          if (priceInput) priceInput.placeholder = 'مثلاً: يذكر عند التواصل';
-        } else {
-          pickAuction.style.display = '';
-          if (priceLabel) priceLabel.textContent = defaultPriceLabel;
-          if (priceInput) priceInput.placeholder = defaultPricePlaceholder;
+  // Loads the category list into the <select>. On a flaky connection this
+  // can fail silently, leaving the field empty and causing a confusing
+  // generic "data error" on submit -- so we retry a few times automatically
+  // and show a clear, dismissible warning if it still fails.
+  let categoriesLoaded = false;
+  const catWarning = document.getElementById('categoryWarning');
+
+  function wireCategoryChange(sel) {
+    sel.addEventListener('change', () => {
+      const isJob = sel.value === 'وظائف';
+      if (isJob) {
+        pickAuction.style.display = 'none';
+        setKind('FIXED');
+        if (priceLabel) priceLabel.textContent = 'الراتب (اختياري)';
+        if (priceInput) priceInput.placeholder = 'مثلاً: يذكر عند التواصل';
+      } else {
+        pickAuction.style.display = '';
+        if (priceLabel) priceLabel.textContent = defaultPriceLabel;
+        if (priceInput) priceInput.placeholder = defaultPricePlaceholder;
+      }
+    });
+  }
+
+  function loadCategories(attempt) {
+    attempt = attempt || 1;
+    fetch('/api/listings/categories')
+      .then((r) => r.json())
+      .then((data) => {
+        const cats = data.categories || [];
+        if (!cats.length) throw new Error('empty');
+        const sel = document.getElementById('category');
+        sel.innerHTML = cats.map((c) => `<option value="${c}">${c}</option>`).join('');
+        wireCategoryChange(sel);
+        categoriesLoaded = true;
+        if (catWarning) catWarning.style.display = 'none';
+      })
+      .catch(() => {
+        if (attempt < 4) {
+          // retry with a short backoff -- handles a slow/dropped connection
+          setTimeout(() => loadCategories(attempt + 1), attempt * 1500);
+        } else if (catWarning) {
+          catWarning.textContent = 'ما قدرنا نجيب قائمة الفئات، تأكد من النت وحدّث الصفحة قبل ما تنشر.';
+          catWarning.style.display = '';
         }
       });
-    });
+  }
+  loadCategories();
 
   function digitCount(v) {
     return String(v).replace(/\D/g, '').length;
@@ -118,6 +144,14 @@
     if (digitCount(phone) < 9) {
       msg.textContent = 'رقم التلفون ناقص، تأكد منه.';
       msg.className = 'msg err';
+      return;
+    }
+
+    const categoryVal = document.getElementById('category').value;
+    if (!categoriesLoaded || !categoryVal) {
+      msg.textContent = 'قائمة الفئات ما وصلت لسه بسبب النت. حدّث الصفحة وجرب كمان مرة.';
+      msg.className = 'msg err';
+      loadCategories();
       return;
     }
 

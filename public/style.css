@@ -145,6 +145,43 @@ main {
   cursor: pointer;
 }
 
+/* PWA "install app" instructions sheet -- shown on click when there's no
+   native browser install prompt to trigger (iOS Safari, or any browser
+   before beforeinstallprompt has fired). */
+.pwa-sheet {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 999;
+}
+.pwa-sheet-card {
+  position: relative;
+  background: var(--card);
+  color: var(--text);
+  width: 100%;
+  max-width: 480px;
+  border-radius: 16px 16px 0 0;
+  padding: 22px 20px 28px;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, .2);
+}
+.pwa-sheet-card h3 { margin: 0 0 12px; font-size: 17px; }
+.pwa-sheet-card ol { margin: 0 0 10px; padding-inline-start: 20px; line-height: 1.7; }
+.pwa-sheet-card .sub { margin: 0; color: var(--muted); font-size: 13px; }
+.pwa-sheet-close {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+}
+
 /* Language toggle -- cycles AR -> EN -> DE via i18n.js; remembered per
    browser via localStorage. Same footprint as the theme toggle. */
 .lang-toggle {
@@ -564,9 +601,11 @@ button.ghost {
   display: block;
   border-radius: var(--radius);
   overflow: hidden;
-  margin: 14px 0;
+  margin: 10px 0;
   border: 1px solid var(--line);
   aspect-ratio: 4/1;
+  max-height: 110px;
+  transition: opacity .3s ease;
 }
 .ad-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
