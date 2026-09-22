@@ -135,3 +135,52 @@ async function renderCategoryFilter(containerId) {
 // theme.js (loaded in <head>, before this file) defines wireThemeToggle
 // globally; it no-ops on pages without a #themeToggle button.
 if (typeof wireThemeToggle === 'function') wireThemeToggle('themeToggle');
+
+// Lighter, app-style mobile nav (Kleinanzeigen/eBay-app style): the header
+// keeps just the logo + a hamburger on narrow screens (the pill-tabs row
+// used to squeeze into one line and overflow/wrap awkwardly), and the same
+// links repeat as a fixed bottom bar so the site feels like a native app.
+// Runs on every page since app.js is loaded everywhere; no-ops safely if
+// the page has no header/nav.
+(function initMobileNav() {
+  const header = document.querySelector('header.top');
+  const tabs = header && header.querySelector('nav.tabs');
+  if (!header || !tabs) return;
+
+  const burger = document.createElement('button');
+  burger.type = 'button';
+  burger.className = 'nav-burger';
+  burger.setAttribute('aria-label', 'القائمة');
+  burger.textContent = '☰';
+  header.insertBefore(burger, tabs);
+  tabs.classList.add('nav-dropdown');
+
+  burger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    tabs.classList.toggle('is-open');
+  });
+  document.addEventListener('click', (e) => {
+    if (tabs.classList.contains('is-open') && !tabs.contains(e.target) && e.target !== burger) {
+      tabs.classList.remove('is-open');
+    }
+  });
+  tabs.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => tabs.classList.remove('is-open')));
+
+  const links = Array.from(tabs.querySelectorAll('a'));
+  if (!links.length) return;
+  const ICONS = { '/': '🏠', '/auctions': '⏱️', '/sell': '➕', '/me': '👤' };
+  const bottom = document.createElement('nav');
+  bottom.className = 'bottom-nav';
+  bottom.innerHTML = links
+    .map((a) => {
+      const href = a.getAttribute('href') || '';
+      const icon = ICONS[href] || '🔗';
+      const active = a.classList.contains('is-active') ? ' is-active' : '';
+      const i18nKey = a.getAttribute('data-i18n');
+      const i18nAttr = i18nKey ? ` data-i18n="${i18nKey}"` : '';
+      return `<a href="${href}" class="bottom-nav-item${active}"><span class="bn-icon">${icon}</span><span class="bn-label"${i18nAttr}>${a.textContent}</span></a>`;
+    })
+    .join('');
+  document.body.appendChild(bottom);
+  document.body.classList.add('has-bottom-nav');
+})();

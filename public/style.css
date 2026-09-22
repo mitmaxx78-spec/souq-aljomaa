@@ -100,6 +100,80 @@ nav.tabs a.is-active {
   font-weight: 700;
 }
 
+/* Mobile app-style nav (injected by app.js's initMobileNav): on narrow
+   screens the header keeps just the logo + a hamburger, the pill-tabs row
+   becomes a small dropdown under it instead of squeezing into one line,
+   and the same links repeat as a fixed bottom bar like a native app /
+   Kleinanzeigen-style nav. Desktop is untouched -- the burger and bottom
+   bar simply never appear above 640px. */
+.nav-burger {
+  display: none;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-size: 18px;
+  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 640px) {
+  header.top { padding: 12px 16px; gap: 8px; }
+  header.top .brand { font-size: 17px; }
+  .nav-burger { display: flex; order: -1; }
+
+  nav.tabs.nav-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    inset-inline-start: 12px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 8px;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: 0 12px 28px rgba(0,0,0,.4);
+    z-index: 50;
+    min-width: 170px;
+  }
+  nav.tabs.nav-dropdown.is-open { display: flex; }
+  nav.tabs.nav-dropdown a { text-align: center; border-radius: 8px; }
+
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    inset-inline: 0;
+    display: flex;
+    background: color-mix(in srgb, var(--card) 96%, transparent);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid var(--line);
+    z-index: 45;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  .bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px 4px 10px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 11px;
+  }
+  .bn-icon { font-size: 21px; line-height: 1; }
+  .bottom-nav-item.is-active { color: var(--brand); font-weight: 700; }
+
+  body.has-bottom-nav { padding-bottom: 62px; }
+  body.has-bottom-nav .help-fab { bottom: 76px; }
+  body.has-bottom-nav .help-panel { bottom: 134px; }
+}
+
 main {
   max-width: 960px;
   margin: 0 auto;
@@ -335,8 +409,8 @@ main {
    instead of a plain pill row -- this is the main entry point into browsing. */
 .cat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 10px;
   margin: 4px 0 22px;
 }
 
@@ -344,20 +418,29 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   border: 1px solid var(--line);
   background: var(--card);
   color: var(--muted);
-  padding: 12px 6px 10px;
-  border-radius: 12px;
+  padding: 14px 6px 12px;
+  border-radius: 16px;
   cursor: pointer;
   font-family: inherit;
 }
 
 .cat-icon {
-  font-size: 22px;
+  font-size: 30px;
   line-height: 1;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--card-2);
 }
+
+.cat-tile.is-active .cat-icon { background: color-mix(in srgb, var(--brand) 18%, var(--card-2)); }
 
 .cat-label {
   font-size: 12px;
@@ -593,6 +676,66 @@ button.ghost {
 .help-panel textarea { min-height: 60px; }
 .help-panel button.primary { padding: 9px; font-size: 13px; }
 .help-close { position: absolute; top: 10px; left: 10px; background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; padding: 4px; }
+
+/* Chat-style help assistant (widget.js): message bubbles + quick-reply
+   chips inside the same .help-panel shell used above. */
+.help-chat { display: flex; flex-direction: column; }
+.chat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+  margin: 8px 0;
+  padding-inline-end: 2px;
+}
+.chat-bubble {
+  max-width: 85%;
+  padding: 8px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+.chat-bubble.from-bot {
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  align-self: flex-start;
+  border-start-start-radius: 4px;
+}
+.chat-bubble.from-user {
+  background: var(--brand);
+  color: #1a1400;
+  align-self: flex-end;
+  border-start-end-radius: 4px;
+}
+.chat-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.chat-chips.hidden { display: none; }
+.chat-chip {
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.chat-chip:hover { border-color: var(--brand); }
+.chat-chip-cta { display: block; margin-top: 6px; background: var(--brand); color: #1a1400; border-color: var(--brand); font-weight: 700; }
+.chat-input-row { display: flex; gap: 6px; margin-top: 0; }
+.chat-input-row.hidden { display: none; }
+.chat-input-row input {
+  flex: 1;
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-family: inherit;
+}
+.chat-input-row button { padding: 8px 14px; font-size: 13px; white-space: nowrap; }
 
 /* Banner spec for whoever uploads ad images: 1200x300px (a 4:1 strip).
    Anything else gets cropped to fit via object-fit so the layout never breaks,
