@@ -36,12 +36,17 @@
 </header>
 
 <main>
-  <div class="hero">
-    <h1>{{hero_title}}</h1>
+  <div id="adBanner" class="ad-banner-featured"></div>
+
+  <div class="hero hero-compact">
     <p>{{hero_sub}}</p>
   </div>
 
-  <div id="adBanner"></div>
+  <a href="/sell" class="promo-banner" id="promoBanner">
+    <span class="promo-icon">✨</span>
+    <span class="promo-text" id="promoText"></span>
+    <span class="promo-icon promo-icon-2">✨</span>
+  </a>
 
   <form class="search-bar" id="searchBar">
     <input id="searchQ" type="search" placeholder="دور على غرض... (مثلاً: ثلاجة، سيارة كيا)" data-i18n-ph="search_ph">

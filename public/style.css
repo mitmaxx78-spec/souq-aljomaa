@@ -190,21 +190,101 @@ main {
   margin: 0 0 8px;
 }
 
+/* Homepage now leads with the featured ad banner (paid/affiliate spot,
+   managed from /admin) instead of a big plain welcome headline -- the
+   hero shrinks to just a small tagline underneath it. */
+.hero-compact { padding: 14px 16px 6px; }
+.hero-compact p { font-size: 13px; color: var(--muted); margin: 0; }
+
+.ad-banner-featured {
+  margin: 6px 0 10px;
+  min-height: 90px;
+}
+.ad-banner-featured .ad-banner {
+  margin: 0;
+  max-height: 220px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+/* Small animated promo strip (home.js cycles the text): a slim, elegant
+   call-to-action banner in the site's own brand gradient, with a soft
+   moving shine and fading text -- meant to catch the eye without being a
+   loud, oversized ad. */
+.promo-banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--btn-text);
+  font-weight: 700;
+  font-size: 13.5px;
+  text-align: center;
+  padding: 11px 16px;
+  margin: 4px 0 14px;
+  border-radius: 999px;
+  background: linear-gradient(100deg, var(--brand), var(--brand-2), var(--brand));
+  background-size: 220% 100%;
+  animation: promoShift 6s ease-in-out infinite;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+.promo-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 40%, rgba(255,255,255,0.35) 50%, transparent 60%);
+  background-size: 220% 100%;
+  animation: promoShine 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+.promo-icon {
+  flex: 0 0 auto;
+  animation: promoPulse 1.8s ease-in-out infinite;
+}
+.promo-icon-2 { animation-delay: .4s; }
+.promo-text {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .25s ease, transform .25s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.promo-text.is-in { opacity: 1; transform: translateY(0); }
+
+@keyframes promoShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes promoShine {
+  0% { background-position: -60% 0; }
+  100% { background-position: 160% 0; }
+}
+@keyframes promoPulse {
+  0%, 100% { transform: scale(1); opacity: .85; }
+  50% { transform: scale(1.25); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .promo-banner, .promo-banner::after, .promo-icon { animation: none; }
+}
+
 .search-bar {
   display: flex;
-  gap: 8px;
-  margin: 4px 0 16px;
+  gap: 6px;
+  margin: 4px 0 14px;
   flex-wrap: wrap;
 }
 
 .search-bar input {
-  flex: 1 1 140px;
+  flex: 1 1 130px;
   background: var(--card);
   border: 1px solid var(--line);
   color: var(--text);
   border-radius: 10px;
-  padding: 11px 14px;
-  font-size: 14px;
+  padding: 9px 12px;
+  font-size: 13px;
   font-family: inherit;
 }
 
@@ -214,8 +294,9 @@ main {
   background: var(--brand);
   color: var(--btn-text);
   font-weight: 700;
+  font-size: 13px;
   border-radius: 10px;
-  padding: 11px 22px;
+  padding: 9px 18px;
   cursor: pointer;
 }
 
@@ -409,30 +490,30 @@ main {
    instead of a plain pill row -- this is the main entry point into browsing. */
 .cat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
-  gap: 10px;
-  margin: 4px 0 22px;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 8px;
+  margin: 4px 0 20px;
 }
 
 .cat-tile {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   border: 1px solid var(--line);
   background: var(--card);
   color: var(--muted);
-  padding: 14px 6px 12px;
-  border-radius: 16px;
+  padding: 10px 4px 9px;
+  border-radius: 14px;
   cursor: pointer;
   font-family: inherit;
 }
 
 .cat-icon {
-  font-size: 30px;
+  font-size: 20px;
   line-height: 1;
-  width: 52px;
-  height: 52px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
