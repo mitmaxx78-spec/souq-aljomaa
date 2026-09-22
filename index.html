@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{site_name}}</title>
+<meta name="description" content="{{hero_sub}}">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="سوق الجمعة">
+<meta property="og:description" content="بيع واشتري كل شي — بسعر ثابت أو بالمزاد">
+<meta property="og:image" content="/og.png">
+<meta property="og:type" content="website">
+<link rel="canonical" href="/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"سوق الجمعة","alternateName":"Souq Al-Jomaa","description":"بيع واشتري كل شي — بسعر ثابت أو بالمزاد"}
+</script>
+<script src="/theme.js"></script>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#e0a83c">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="top">
+  <span class="brand">{{site_name}}</span>
+  <nav class="tabs">
+    <a href="/" class="is-active" data-i18n="nav_home">الرئيسية</a>
+    <a href="/auctions" data-i18n="nav_auctions">المزادات</a>
+    <a href="/sell" data-i18n="nav_sell">أعلن</a>
+    <a href="/me" data-i18n="nav_me">حسابي</a>
+  </nav>
+  <button class="lang-toggle" id="langToggle" type="button">ع</button>
+  <button class="theme-toggle" id="themeToggle" type="button">☀️</button>
+  <button class="install-app" id="installApp" type="button" style="display:none" data-i18n="install_app">📲 نزّل التطبيق</button>
+</header>
+
+<main>
+  <div class="hero">
+    <h1>{{hero_title}}</h1>
+    <p>{{hero_sub}}</p>
+  </div>
+
+  <div id="adBanner"></div>
+
+  <form class="search-bar" id="searchBar">
+    <input id="searchQ" type="search" placeholder="دور على غرض... (مثلاً: ثلاجة، سيارة كيا)" data-i18n-ph="search_ph">
+    <input id="searchArea" type="text" placeholder="المنطقة (اختياري)" data-i18n-ph="area_ph">
+    <button type="submit" class="primary" data-i18n="btn_search">بحث</button>
+  </form>
+
+  <div class="categories" id="cats"></div>
+
+  <div class="section-title">
+    <h2 data-i18n="latest_ads">أحدث الإعلانات</h2>
+  </div>
+  <div class="grid" id="fixedGrid"><p class="empty" data-i18n="loading">جاري التحميل…</p></div>
+
+  <div class="section-title">
+    <h2 data-i18n="live_auctions">مزادات جارية</h2>
+    <a href="/auctions" class="more" data-i18n="see_all">شوف الكل ←</a>
+  </div>
+  <div class="grid" id="auctionGrid"><p class="empty" data-i18n="loading">جاري التحميل…</p></div>
+
+  <footer class="site">{{footer_note}}</footer>
+</main>
+
+<a href="/sell" class="fab" data-i18n="fab_add">+ ضيف إعلان</a>
+
+<script src="/app.js"></script>
+<script src="/home.js"></script>
+<script src="/widget.js"></script>
+<script src="/pwa.js"></script>
+<script src="/i18n.js"></script>
+</body>
+</html>

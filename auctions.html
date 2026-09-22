@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>المزادات — {{site_name}}</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="/auctions">
+<script src="/theme.js"></script>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#e0a83c">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="top">
+  <span class="brand">{{site_name}}</span>
+  <nav class="tabs">
+    <a href="/" data-i18n="nav_home">الرئيسية</a>
+    <a href="/auctions" class="is-active" data-i18n="nav_auctions">المزادات</a>
+    <a href="/sell" data-i18n="nav_sell">أعلن</a>
+    <a href="/me" data-i18n="nav_me">حسابي</a>
+  </nav>
+  <button class="lang-toggle" id="langToggle" type="button">ع</button>
+  <button class="theme-toggle" id="themeToggle" type="button">☀️</button>
+</header>
+
+<main>
+  <div class="hero">
+    <h1 data-i18n="auctions_h1">المزادات الجارية</h1>
+    <p data-i18n="auctions_sub">زايد وشوف قديش وصل السعر لحظة بلحظة</p>
+  </div>
+
+  <form class="search-bar" id="searchBar">
+    <input id="searchQ" type="search" placeholder="دور على مزاد... (مثلاً: سيارة، ذهب)" data-i18n-ph="search_auction_ph">
+    <input id="searchArea" type="text" placeholder="المنطقة (اختياري)" data-i18n-ph="area_ph">
+    <button type="submit" class="primary" data-i18n="btn_search">بحث</button>
+  </form>
+
+  <div class="grid" id="auctionGrid"><p class="empty" data-i18n="loading">جاري التحميل…</p></div>
+
+  <footer class="site">{{footer_note}}</footer>
+</main>
+
+<a href="/sell" class="fab" data-i18n="fab_add">+ ضيف إعلان</a>
+
+<script src="/app.js"></script>
+<script src="/auctions-page.js"></script>
+<script src="/widget.js"></script>
+<script src="/pwa.js"></script>
+<script src="/i18n.js"></script>
+</body>
+</html>

@@ -1,0 +1,578 @@
+:root {
+  --bg: #14110d;
+  --card: #1e1a15;
+  --card-2: #262019;
+  --text: #f5efe6;
+  --muted: #a89a86;
+  /* Refined against Theme Factory's "Golden Hour" palette (mustard/terracotta/
+     chocolate-brown) -- the same family we'd already landed on independently,
+     tightened here for contrast against the dark souq background. */
+  --brand: #e0a83c;
+  --brand-2: #bf5a30;
+  --accent: #2f7d6e;
+  --line: #332c22;
+  --ok: #3fa66b;
+  --danger: #d1493f;
+  --btn-text: #14110d;
+  --radius: 14px;
+}
+
+/* Day mode: same warm souq palette, just flipped to a light, sunlit reading
+   of it -- cream background, dark-roast text, the same gold/terracotta brand
+   colors still doing the job of buttons and prices. Picked explicitly (an
+   html[data-theme] attribute set by theme.js), so it works with no flash even
+   before prefers-color-scheme is checked. */
+:root[data-theme="light"] {
+  --bg: #faf5ec;
+  --card: #ffffff;
+  --card-2: #f2ead9;
+  --text: #241d14;
+  --muted: #7a6c58;
+  --brand: #b8791f;
+  --brand-2: #9a4623;
+  --accent: #256e5f;
+  --line: #e3d7c0;
+  --ok: #2f8a56;
+  --danger: #b93a30;
+  --btn-text: #fffaf0;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  max-width: 100%;
+  /* A defensive backstop, not a fix for anything specific: an absolutely
+     positioned element (a map control, a stray transform) can create
+     horizontal scroll on a phone without ever being visible itself. */
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Kufi Arabic', 'Segoe UI', Tahoma, sans-serif;
+  line-height: 1.6;
+}
+
+a { color: inherit; }
+
+header.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(6px);
+  z-index: 10;
+}
+
+header.top .brand {
+  font-size: 20px;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+nav.tabs {
+  display: flex;
+  gap: 8px;
+}
+
+nav.tabs a {
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 14px;
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+
+nav.tabs a.is-active {
+  color: var(--btn-text);
+  background: var(--brand);
+  border-color: var(--brand);
+  font-weight: 700;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 16px 60px;
+}
+
+.hero {
+  text-align: center;
+  padding: 32px 16px 24px;
+}
+
+.hero h1 {
+  font-size: 28px;
+  margin: 0 0 8px;
+}
+
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin: 4px 0 16px;
+  flex-wrap: wrap;
+}
+
+.search-bar input {
+  flex: 1 1 140px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.search-bar button {
+  flex: 0 0 auto;
+  border: 1px solid var(--brand);
+  background: var(--brand);
+  color: var(--btn-text);
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 11px 22px;
+  cursor: pointer;
+}
+
+/* Language toggle -- cycles AR -> EN -> DE via i18n.js; remembered per
+   browser via localStorage. Same footprint as the theme toggle. */
+.lang-toggle {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  min-width: 38px;
+  height: 38px;
+  padding: 0 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Day/night toggle -- a plain icon button that swaps the html[data-theme]
+   attribute; no page reload, no flash, remembered per browser via localStorage. */
+.theme-toggle {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.install-app {
+  border: 1px solid var(--brand);
+  background: var(--brand);
+  color: var(--btn-text);
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.hero p {
+  color: var(--muted);
+  margin: 0;
+}
+
+.section-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 28px 0 12px;
+}
+
+.section-title h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.section-title a.more {
+  font-size: 13px;
+  color: var(--brand);
+  text-decoration: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px;
+  text-decoration: none;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.card .thumb {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: var(--card-2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.card .thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.card .title { font-weight: 700; font-size: 14px; }
+.card .meta { font-size: 12px; color: var(--muted); }
+.card .price { font-weight: 800; color: var(--brand); font-size: 15px; }
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--card-2);
+  color: var(--muted);
+  width: fit-content;
+}
+
+.badge.auction { background: rgba(255,122,69,0.15); color: var(--brand-2); }
+
+.empty {
+  color: var(--muted);
+  text-align: center;
+  padding: 30px 0;
+  font-size: 14px;
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 20px;
+}
+
+.categories button {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.categories button.is-active {
+  background: var(--brand);
+  color: var(--btn-text);
+  border-color: var(--brand);
+  font-weight: 700;
+}
+
+/* eBay-style category tiles: an icon over a label, wrapping into a tidy grid
+   instead of a plain pill row -- this is the main entry point into browsing. */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+  gap: 8px;
+  margin: 4px 0 22px;
+}
+
+.cat-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--muted);
+  padding: 12px 6px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.cat-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.cat-label {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.cat-tile.is-active {
+  background: var(--card-2);
+  border-color: var(--brand);
+  color: var(--text);
+}
+
+.cat-tile.is-active .cat-icon {
+  filter: drop-shadow(0 0 6px rgba(217, 154, 62, 0.5));
+}
+
+.fab {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  color: var(--btn-text);
+  border: none;
+  border-radius: 999px;
+  padding: 14px 22px;
+  font-weight: 800;
+  font-size: 15px;
+  box-shadow: 0 10px 24px rgba(255,122,69,0.35);
+  text-decoration: none;
+}
+
+form.card { gap: 12px; }
+label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 4px; }
+input, textarea, select {
+  width: 100%;
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 11px 12px;
+  font-size: 15px;
+  font-family: inherit;
+}
+textarea { min-height: 90px; resize: vertical; }
+
+button.primary {
+  background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  color: var(--btn-text);
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+}
+
+button.ghost {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.map-locate {
+  border: 1px dashed var(--line);
+  color: var(--muted);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.pick-map, .mini-map {
+  width: 100%;
+  height: 220px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+/* For the honeypot field (and anything else that must be invisible but
+   still focusable/readable by a screen reader): hidden by clipping to
+   nothing, not by pushing it thousands of pixels off-screen. A huge negative
+   offset like `left:-9999px` combined with dir="rtl" was found to blank the
+   entire page in at least one Chromium build -- not worth the risk. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.kind-pick { display: flex; gap: 10px; margin-bottom: 6px; }
+.kind-pick button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+}
+.kind-pick button.is-on { background: var(--brand); color: var(--btn-text); border-color: var(--brand); }
+
+.msg { font-size: 13px; margin-top: 6px; min-height: 18px; }
+.msg.err { color: var(--danger); }
+.msg.ok { color: var(--ok); }
+
+.detail-gallery {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+}
+.detail-gallery img { width: 100%; height: 100%; object-fit: cover; }
+
+.countdown {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--brand-2);
+}
+
+.bid-list { list-style: none; padding: 0; margin: 10px 0; font-size: 13px; color: var(--muted); }
+.bid-list li { padding: 6px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; }
+
+.wa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #25d366;
+  color: #06210f;
+  border-radius: 10px;
+  padding: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  width: 100%;
+}
+
+.balance-card {
+  text-align: center;
+  padding: 24px;
+}
+.balance-card .amount {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--brand);
+}
+.mini-list { list-style: none; padding: 0; margin: 10px 0; font-size: 13px; }
+.mini-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.pill {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--card-2);
+  color: var(--muted);
+}
+.pill.ok { background: rgba(34,197,94,0.15); color: var(--ok); }
+.pill.pending { background: rgba(255,176,32,0.15); color: var(--brand); }
+.pill.bad { background: rgba(239,68,68,0.15); color: var(--danger); }
+
+/* Help widget: a small floating button, closed by default, that opens a
+   compact panel. Deliberately not a full-screen chat -- it should feel like
+   an FAQ card someone can glance at and dismiss, not an intrusive modal. */
+.help-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--brand);
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  z-index: 40;
+}
+.help-panel {
+  position: fixed;
+  bottom: 78px;
+  right: 20px;
+  width: min(320px, calc(100vw - 32px));
+  max-height: min(440px, calc(100vh - 120px));
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+  z-index: 40;
+}
+.help-panel.hidden { display: none; }
+.help-panel h3 { margin: 0 0 6px; font-size: 15px; }
+.help-panel .sub { font-size: 13px; margin-bottom: 10px; }
+.faq-item { border-bottom: 1px solid var(--line); padding: 8px 0; }
+.faq-item summary { cursor: pointer; font-size: 13px; font-weight: 700; }
+.faq-item p { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+.help-panel form { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.help-panel input, .help-panel textarea, .help-panel select {
+  width: 100%; background: var(--card-2); border: 1px solid var(--line); color: var(--text);
+  border-radius: 8px; padding: 8px 10px; font-size: 13px; font-family: inherit;
+}
+.help-panel textarea { min-height: 60px; }
+.help-panel button.primary { padding: 9px; font-size: 13px; }
+.help-close { position: absolute; top: 10px; left: 10px; background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; padding: 4px; }
+
+/* Banner spec for whoever uploads ad images: 1200x300px (a 4:1 strip).
+   Anything else gets cropped to fit via object-fit so the layout never breaks,
+   but a 4:1 image is what looks sharp and uncropped here. */
+.ad-banner {
+  display: block;
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 14px 0;
+  border: 1px solid var(--line);
+  aspect-ratio: 4/1;
+}
+.ad-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+footer.site {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 30px 16px;
+}

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8ab52"/>
+      <stop offset="1" stop-color="#c1602c"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="48" fill="#14110d"/>
+  <circle cx="50" cy="50" r="48" fill="none" stroke="#332c22" stroke-width="1.5"/>
+  <!-- radiant sun mark: the market's namesake day -->
+  <circle cx="50" cy="27" r="5.5" fill="url(#g1)"/>
+  <g stroke="url(#g1)" stroke-width="2.4" stroke-linecap="round">
+    <line x1="50" y1="12" x2="50" y2="16.5"/>
+    <line x1="37.5" y1="17.5" x2="40" y2="21"/>
+    <line x1="62.5" y1="17.5" x2="60" y2="21"/>
+  </g>
+  <!-- souq gate: two arches -->
+  <path d="M22 78 V56 A11 11 0 0 1 44 56 V78" fill="none" stroke="url(#g1)" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M56 78 V56 A11 11 0 0 1 78 56 V78" fill="none" stroke="url(#g1)" stroke-width="4.2" stroke-linecap="round"/>
+  <line x1="16" y1="78" x2="84" y2="78" stroke="url(#g1)" stroke-width="4.2" stroke-linecap="round"/>
+</svg>

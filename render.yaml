@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: souq-aljomaa
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run migrate && npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: souq-aljomaa-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+
+databases:
+  - name: souq-aljomaa-db
+    plan: free
+    databaseName: souq_aljomaa
+    user: souq
